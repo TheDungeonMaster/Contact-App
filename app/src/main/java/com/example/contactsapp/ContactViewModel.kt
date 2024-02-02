@@ -52,7 +52,28 @@ class ContactViewModel(
                 )}
                 }
             ContactEvent.SaveContact -> {
+                val firstName = state.value.firstName
+                val lastName = state.value.lastName
+                val phoneNumber = state.value.phoneNumber
 
+                if(firstName.isBlank() || lastName.isBlank() || phoneNumber.isBlank()) {
+                    return
+                }
+
+                val contact = Contact(
+                    firstName = firstName,
+                    lastName = lastName,
+                    phoneNumber = phoneNumber
+                )
+                viewModelScope.launch {
+                    dao.insertContact(contact)
+                }
+                _state.update {it.copy(
+                    isAddingContact = false,
+                    firstName = "",
+                    lastName = "",
+                    phoneNumber = ""
+                )}
             }
             is ContactEvent.SetFirstName -> {
                 _state.update {it.copy(
