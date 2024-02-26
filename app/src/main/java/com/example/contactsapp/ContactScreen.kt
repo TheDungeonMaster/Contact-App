@@ -64,7 +64,6 @@ fun ContactScreen(
                         }
                     }
                 }
-
             }
         }
 }
